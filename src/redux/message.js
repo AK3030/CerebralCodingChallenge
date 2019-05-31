@@ -1,5 +1,15 @@
 import questionData from '../questionData';
 
+//actions
+export const addMessage = message => {
+    console.log("hellooo", message)
+    return {
+        type: 'ADD_MESSAGE',
+        message
+    }
+};
+
+//reducer
 export default (state = [], action) => {
     switch (action.type) {
         case 'ADD_MESSAGE':

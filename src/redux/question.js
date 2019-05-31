@@ -1,3 +1,4 @@
+//actions
 export const incrementQuestion = () => {
     return {
         type: 'INCREMENT_QUESTION',
@@ -40,4 +41,16 @@ export const putAnswer = (answer, id) => {
         method: 'PUT',
         body: JSON.stringify(answer)
     })
+}
+
+//reducer
+export default (state = 1, action) => {
+    switch (action.type) {
+        case 'INCREMENT_QUESTION':
+            return state + 1;
+        case 'SET_QUESTION':
+            return action.questionId
+        default:
+            return 0;
+    }
 }

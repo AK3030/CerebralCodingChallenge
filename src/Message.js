@@ -14,11 +14,12 @@ const MainDiv = styled.div`
 const User = styled.div`
     margin-bottom: 5px;
     margin-top: 5px;
-    color: #769FDE;
+    color: #709DE6;
 `
 
 const MessageBody = styled.div`
     color: #CBD3DC;
+    font-size: 15px;
 `
 
 class Message extends Component {

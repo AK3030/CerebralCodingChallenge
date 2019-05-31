@@ -2,24 +2,21 @@ import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import fetchJsonp from 'fetch-jsonp';
+// import fetchJsonp from 'fetch-jsonp';
 import questionData from './questionData';
-import { addMessage } from './actions/messageAction';
-import { setQuestion, incrementQuestion, putAnswerAction, putAnswer } from './actions/currentQuestionActions'
+import { addMessage } from './redux/message';
+import { setQuestion, incrementQuestion, putAnswerAction, putAnswer } from './redux/question'
 import validateQuestion from './validateQuestion';
 import Plane from './paperairplane.png'
 import Message from './Message';
 import BrainIcon from './brainicon.png';
 
-
-console.log("questionData", questionData);
-
 const Main = styled.div`
     display: flex;
     flex-direction: column;
-    width: 45%;
+    width: 40%;
     height: 45%;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.4)
+    box-shadow: 5px 20px 30px rgba(0, 0, 0, 0.25);
 `
 
 const TitleBar = styled.div`
@@ -31,6 +28,7 @@ const TitleBar = styled.div`
     box-sizing: border-box;
     padding-left: 20px;
     font-weight: 600;
+    color: #5D6979;
 `
 
 const MessageWindow = styled.div`
@@ -48,23 +46,38 @@ const MessageWindow = styled.div`
 const MessageInputContainer = styled(TitleBar)`
     flex-grow: 3;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-    padding-left: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
 `
 
 const MessageInput = styled.textarea`
-    height: 80%;
+    height: 55%;
     width: 70%;
     resize: none;
     border-radius: 3px;
     border-color: #DDE4ED;
+    color: #CBD3DC;
+    font-size: 15px;
+    font-weight: 600;
+    padding-left: 10px;
+    box-sizing: border-box;
+    flex-grow: 1;
+    padding-top: 8px;
+    &::placeholder {
+      color: #CBD3DC;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    
 `
 
 const SendMessageButton = styled.div`
     background-color: #5294FC;
-    height: 60px;
-    width: 60px;
+    height: 55%;
+    width: 90px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -72,6 +85,7 @@ const SendMessageButton = styled.div`
     &:hover {
       cursor: pointer;
     }
+    margin-left: 12px;
 `
 
 const BottomScroll = styled.div`
@@ -79,7 +93,7 @@ const BottomScroll = styled.div`
 `
 
 const PaperAirplaneImage = styled.img`
-  width: 50%;
+  width: 28%;
   filter: invert(100%);
 `
 
@@ -101,35 +115,31 @@ class ChatWindow extends Component {
   //start at question 0 on window load
   componentDidMount() {
     this.scrollToBottom();
-    this.props.setQuestion(6);
+    this.props.setQuestion(0);
   }
 
   componentDidUpdate() {
     this.scrollToBottom();
   }
 
-  // sendQuestion = () => {
-  //   this.currentQuestion = questionData.find((questionObj) => questionObj.id === this.props.currentQuestion)
-  //   this.props.addMessage({user: 'Cerebral', body: this.currentQuestion.question})
-  // }
-  //scroll to bottom of chat
   scrollToBottom = () => {
 
     this.bottomOfMessages.scrollIntoView();
   }
 
   updateMessage = (e) => {
-    const message = e.target.value
+    const message = e.target.value;
+    console.log('message', message)
     this.setState((prevSate, props) => ({ message: message }))
   }
 
-  clearInput = () => {
-    this.setState(prevSate => ({ message: "" }))
+  clearInput = (e) => {
+    this.setState(prevSate => ({ message: ""}))
+    console.log("clear input", this.state);
   }
 
   //add user message to chat window/redux and validate after 
   sendMessage = () => {
-    
     this.props.addMessage({ user: 'Me', body: this.state.message });
     let currentFullQuestion = questionData.find(question => question.id === this.props.currentQuestion)
     let userMessage = this.state.message
@@ -143,17 +153,24 @@ class ChatWindow extends Component {
       this.props.addMessage({ user: 'Cerebral', body: 'Invalid Answer, try again' });
     }
 
-    this.clearInput()
+    this.clearInput();
+    this.moveCursorToStart();
   }
 
   handleKeyPress = (e) => {
+    
     if (e.key === 'Enter') {
+      e.preventDefault();
       this.sendMessage();
     }
   }
 
-  render() {
+  moveCursorToStart = (e) => {
+    this.messageInput.setSelectionRange(0, 0);
+  }
 
+  render() {
+    console.log(this.state)
     return (
       <Main>
         <TitleBar>
@@ -165,7 +182,7 @@ class ChatWindow extends Component {
           <BottomScroll ref={el => { this.bottomOfMessages = el }}></BottomScroll>
         </MessageWindow>
         <MessageInputContainer>
-          <MessageInput onKeyPress={this.handleKeyPress} value={this.state.message} onChange={this.updateMessage}></MessageInput>
+          <MessageInput ref={el => { this.messageInput = el }}placeholder="Type here..."onKeyPress={this.handleKeyPress} value={this.state.message} onChange={this.updateMessage}></MessageInput>
           <SendMessageButton onClick={this.sendMessage}>
             <PaperAirplaneImage src={Plane}/>
           </SendMessageButton>

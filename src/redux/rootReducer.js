@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import messageReducer from './messageReducer';
-import currentQuestionReducer from './currentQuestionReducer';
+import messageReducer from '../reducers/messageReducer';
+import currentQuestionReducer from './question';
 export default combineReducers({
     messages: messageReducer,
     currentQuestion: currentQuestionReducer
