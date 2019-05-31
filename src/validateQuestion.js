@@ -1,6 +1,5 @@
+//returns path to next question or false for invalid answer
 const validateQuestion = (userAnswer, fullQuestion) => {
-
-  //should always return the path to the next question
   if (Array.isArray(fullQuestion.validation)) {
     return optionsValidation(userAnswer, fullQuestion)
   }
@@ -22,10 +21,18 @@ const validateQuestion = (userAnswer, fullQuestion) => {
 const optionsValidation = (userAnswer, fullQuestion) => {
   let validation = fullQuestion.validation;
   let paths = fullQuestion.paths;
+  console.log(userAnswer === validation[2])
   let id = fullQuestion.id
   let matchedAnswer = validation.find((answer) => answer === userAnswer)
+  console.log('matched Answer', matchedAnswer)
   if (matchedAnswer) {
-    return paths[matchedAnswer];
+    if (paths[matchedAnswer]) {
+      return paths[matchedAnswer];
+    }
+    else {
+      return paths;
+    }
+    
   }
   else {
     return false;

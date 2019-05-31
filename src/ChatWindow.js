@@ -5,8 +5,9 @@ import styled from 'styled-components';
 import fetchJsonp from 'fetch-jsonp';
 import questionData from './questionData';
 import { addMessage } from './actions/messageAction';
-import { setQuestion, incrementQuestion, putAnswerAction, putAnswer } from  './actions/currentQuestionActions'
+import { setQuestion, incrementQuestion, putAnswerAction, putAnswer } from './actions/currentQuestionActions'
 import validateQuestion from './validateQuestion';
+import Plane from './paperairplane.png'
 
 
 console.log("questionData", questionData);
@@ -16,15 +17,17 @@ const Main = styled.div`
     flex-direction: column;
     width: 45%;
     height: 45%;
-    background-color: purple;
-    opacity: .5;
+
 `
 
 const TitleBar = styled.div`
     width: 100%;
     flex-grow: 2;
-    background-color: blue;
-    opacity: .5;
+    background-color: #ECF5F6;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding-left: 20px;
 `
 
 const MessageWindow = styled.div`
@@ -36,10 +39,10 @@ const MessageWindow = styled.div`
     align-items: flex-end;
     box-sizing: border-box;
     padding-right: 20px;
+    background-color: white;
 `
 
 const MessageInputContainer = styled(TitleBar)`
-    background-color: pink;
     flex-grow: 3;
     display: flex;
     justify-content: space-around;
@@ -50,6 +53,8 @@ const MessageInput = styled.textarea`
     height: 80%;
     width: 70%;
     resize: none;
+    border-radius: 3px;
+    border-color: #DDE4ED;
 `
 
 const Message = styled.div`
@@ -58,13 +63,25 @@ const Message = styled.div`
 `
 
 const SendMessageButton = styled.div`
-    background-color: blue;
+    background-color: #5294FC;
     height: 60%;
     width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    &:hover {
+      cursor: pointer;
+    }
 `
 
 const BottomScroll = styled.div`
 
+`
+
+const PaperAirplaneImage = styled.img`
+  width: 50%;
+  filter: invert(100%);
 `
 
 class ChatWindow extends Component {
@@ -73,9 +90,10 @@ class ChatWindow extends Component {
     this.state = {};
   }
 
+  //start at question 0 on window load
   componentDidMount() {
-      this.scrollToBottom();
-      this.props.setQuestion(0);
+    this.scrollToBottom();
+    this.props.setQuestion(6);
   }
 
   componentDidUpdate() {
@@ -86,23 +104,25 @@ class ChatWindow extends Component {
   //   this.currentQuestion = questionData.find((questionObj) => questionObj.id === this.props.currentQuestion)
   //   this.props.addMessage({user: 'Cerebral', body: this.currentQuestion.question})
   // }
-
+  //scroll to bottom of chat
   scrollToBottom = () => {
+
     this.bottomOfMessages.scrollIntoView();
   }
 
   updateMessage = (e) => {
     const message = e.target.value
-    this.setState( (prevSate, props) => ({message: message}))
+    this.setState((prevSate, props) => ({ message: message }))
   }
 
   clearInput = () => {
-    this.setState( prevSate => ({message: ""}))
+    this.setState(prevSate => ({ message: "" }))
   }
 
+  //add user message to chat window/redux and validate after 
   sendMessage = () => {
-    //add user message to redux
-    this.props.addMessage({user: 'Me', body: this.state.message});
+    
+    this.props.addMessage({ user: 'Me', body: this.state.message });
     let currentFullQuestion = questionData.find(question => question.id === this.props.currentQuestion)
     let userMessage = this.state.message
     let validAnswer = validateQuestion(userMessage, currentFullQuestion);
@@ -112,9 +132,9 @@ class ChatWindow extends Component {
     }
     else {
       // if invalid answer tell user to try again
-      this.props.addMessage({user: 'Cerebral', body: 'Invalid Answer, try again'});
+      this.props.addMessage({ user: 'Cerebral', body: 'Invalid Answer, try again' });
     }
-    
+
     this.clearInput()
   }
 
@@ -123,23 +143,25 @@ class ChatWindow extends Component {
     return (
       <Main>
 
-          <TitleBar>Slim Shady</TitleBar>
-          <MessageWindow>
-              {this.props.messages.map( (message, index) => <div key={index}>{message.user + ": " + message.body}</div>)}
-              <BottomScroll ref = {el => {this.bottomOfMessages = el}}></BottomScroll>
-          </MessageWindow>
-          <MessageInputContainer>
-              <MessageInput value = {this.state.message} onChange={this.updateMessage}></MessageInput>
-              <SendMessageButton onClick={this.sendMessage}></SendMessageButton>
-          </MessageInputContainer>
+        <TitleBar>Cerebral</TitleBar>
+        <MessageWindow>
+          {this.props.messages.map((message, index) => <div key={index}>{message.user + ": " + message.body}</div>)}
+          <BottomScroll ref={el => { this.bottomOfMessages = el }}></BottomScroll>
+        </MessageWindow>
+        <MessageInputContainer>
+          <MessageInput value={this.state.message} onChange={this.updateMessage}></MessageInput>
+          <SendMessageButton onClick={this.sendMessage}>
+            <PaperAirplaneImage src={Plane}/>
+          </SendMessageButton>
+        </MessageInputContainer>
       </Main>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-    messages: state.messages,
-    currentQuestion: state.currentQuestion,
+  messages: state.messages,
+  currentQuestion: state.currentQuestion,
 })
 
 const mapDispatchToProps = dispatch => ({
