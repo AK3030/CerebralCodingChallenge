@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import fetchJsonp from 'fetch-jsonp';
 import questionData from './questionData';
-import {addMessage} from './actions/messageAction';
+import { addMessage } from './actions/messageAction';
+import { setQuestion, incrementQuestion } from  './actions/currentQuestionActions'
 
 console.log("questionData", questionData);
 
@@ -87,10 +88,16 @@ class ChatWindow extends Component {
       //   return data;
       // });
       this.scrollToBottom();
+      this.sendQuestion();
   }
 
   componentDidUpdate() {
     this.scrollToBottom();
+  }
+
+  sendQuestion = () => {
+    this.currentQuestion = questionData.find((questionObj) => questionObj.id === this.props.currentQuestion)
+    this.props.addMessage({user: 'Cerebral', body: this.currentQuestion.question})
   }
 
   scrollToBottom = () => {
@@ -100,6 +107,49 @@ class ChatWindow extends Component {
   updateMessage = (e) => {
     const message = e.target.value
     this.setState( (prevSate, props) => ({message: message}))
+  }
+
+  validateQuestion = (userAnswer, fullQuestion) => {
+    //should always return the path to the next question
+    if (Array.isArray(validation)) {
+      return optionsValidation(userAnswer, fullQuestion)
+    }
+    else if (typeof fullQuestion.validation === "string") {
+      return this.regexValidation(userAnswer, fullQuestion);
+    }
+    else {
+      if (fullQuestion.validation) {
+        return fullQuestion.paths
+      }
+      else {
+        return;
+      }
+    }
+
+  }
+
+  optionsValidation = (userAnswer, fullQuestion) => {
+    let validation = fullQuestion.validation;
+    let paths = fullQuestion.paths;
+    let id = fullQuestion.id
+    let matchedAnswer = validation.find((answer) => answer === userAnswer)
+    if (matchedAnswer) {
+      return paths[matchedAnswer];
+    }
+    else {
+      return id;
+    }
+  }
+
+  regexValidation(userAnswer, fullQuestion) {
+    let regexVal = fullQuestion.validation
+    let regex = RegExp(regexVal);
+    if (regex.test(userAnswer)) {
+      return paths;
+    }
+    else {
+      return fullQuestion.id
+    }
   }
 
   clearMessage = () => {
@@ -125,7 +175,6 @@ class ChatWindow extends Component {
               <MessageInput value = {this.state.message} onChange={this.updateMessage}></MessageInput>
               <SendMessageButton onClick={this.sendMessage}></SendMessageButton>
           </MessageInputContainer>
-          <button onClick={() => this.props.addMessage({user: "Pablo", body:"hello hi"})}>Add Message</button>
         
       </Main>
     );
@@ -133,11 +182,13 @@ class ChatWindow extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    messages: state.messages
+    messages: state.messages,
+    currentQuestion: state.currentQuestion,
 })
 
 const mapDispatchToProps = dispatch => ({
-  addMessage: (message) => dispatch(addMessage(message))
+  addMessage: (message) => dispatch(addMessage(message)),
+  setQuestion: (id) => dispatch(setQuestion(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatWindow);

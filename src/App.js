@@ -20,8 +20,6 @@ class App extends Component {
     this.props.simpleAction();
   }
 
-  
-
   render() {
     return (
       <MainDiv>
