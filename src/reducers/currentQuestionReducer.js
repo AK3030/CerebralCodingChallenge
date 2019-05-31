@@ -3,7 +3,7 @@ export default (state = 1, action) => {
         case 'INCREMENT_QUESTION':
             return state + 1;
         case 'SET_QUESTION':
-            return action.questionID
+            return action.questionId
         default:
             return 0;
     }

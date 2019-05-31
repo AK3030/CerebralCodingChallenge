@@ -5,7 +5,8 @@ import styled from 'styled-components';
 import fetchJsonp from 'fetch-jsonp';
 import questionData from './questionData';
 import { addMessage } from './actions/messageAction';
-import { setQuestion, incrementQuestion } from  './actions/currentQuestionActions'
+import { setQuestion, incrementQuestion, putAnswerAction, putAnswer } from  './actions/currentQuestionActions'
+
 
 console.log("questionData", questionData);
 
@@ -77,16 +78,6 @@ class ChatWindow extends Component {
   }
 
   componentDidMount() {
-      // console.log('hello1');
-      // fetchJsonp('https://filebin.net/6u1vikvkoxbb24nt/cerebral-coding-test-questions.json?t=x2ix165y')
-      // .then(function(response) {
-      //   console.log("hello")
-      //   return response.json();
-      // })
-      // .then(function(data) {
-      //   console.log(data)
-      //   return data;
-      // });
       this.scrollToBottom();
       this.sendQuestion();
   }
@@ -110,9 +101,10 @@ class ChatWindow extends Component {
   }
 
   validateQuestion = (userAnswer, fullQuestion) => {
+
     //should always return the path to the next question
-    if (Array.isArray(validation)) {
-      return optionsValidation(userAnswer, fullQuestion)
+    if (Array.isArray(fullQuestion.validation)) {
+      return this.optionsValidation(userAnswer, fullQuestion)
     }
     else if (typeof fullQuestion.validation === "string") {
       return this.regexValidation(userAnswer, fullQuestion);
@@ -137,32 +129,43 @@ class ChatWindow extends Component {
       return paths[matchedAnswer];
     }
     else {
-      return id;
+      return false;
     }
   }
 
   regexValidation(userAnswer, fullQuestion) {
     let regexVal = fullQuestion.validation
     let regex = RegExp(regexVal);
+    let paths = fullQuestion.paths;
     if (regex.test(userAnswer)) {
       return paths;
     }
     else {
-      return fullQuestion.id
+      return false;
     }
   }
 
-  clearMessage = () => {
+  clearInput = () => {
     this.setState( (prevSate, props) => ({message: ""}))
   }
 
   sendMessage = () => {
     this.props.addMessage({user: 'Me', body: this.state.message});
-    this.clearMessage()
+    let currentFullQuestion = questionData.find(question => question.id === this.props.currentQuestion)
+    let userMessage = this.state.message
+    let validAnswer = this.validateQuestion(userMessage, currentFullQuestion);
+    if (validAnswer) {
+      this.props.putAnswerAction(validAnswer, currentFullQuestion.id, validAnswer);
+    }
+    else {
+      this.props.addMessage({user: 'Cerebral', body: 'Invalid Answer, try again'});
+    }
+    
+    this.clearInput()
   }
 
   render() {
-    console.log("this.state", this.state)
+
     return (
       <Main>
 
@@ -175,7 +178,7 @@ class ChatWindow extends Component {
               <MessageInput value = {this.state.message} onChange={this.updateMessage}></MessageInput>
               <SendMessageButton onClick={this.sendMessage}></SendMessageButton>
           </MessageInputContainer>
-        
+          <button onClick = { () => this.props.setQuestion(5)}>test</button>
       </Main>
     );
   }
@@ -188,7 +191,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
   addMessage: (message) => dispatch(addMessage(message)),
-  setQuestion: (id) => dispatch(setQuestion(id))
+  setQuestion: (id) => dispatch(setQuestion(id)),
+  putAnswerAction: (answer, id, nextQuestion) => dispatch(putAnswerAction(answer, id, nextQuestion))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatWindow);
