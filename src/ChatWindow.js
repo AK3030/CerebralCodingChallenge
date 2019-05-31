@@ -8,6 +8,7 @@ import { addMessage } from './actions/messageAction';
 import { setQuestion, incrementQuestion, putAnswerAction, putAnswer } from './actions/currentQuestionActions'
 import validateQuestion from './validateQuestion';
 import Plane from './paperairplane.png'
+import Message from './Message';
 
 
 console.log("questionData", questionData);
@@ -36,9 +37,9 @@ const MessageWindow = styled.div`
     overflow: scroll;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
     box-sizing: border-box;
     padding-right: 20px;
+    padding-left: 20px;
     background-color: white;
 `
 
@@ -55,11 +56,6 @@ const MessageInput = styled.textarea`
     resize: none;
     border-radius: 3px;
     border-color: #DDE4ED;
-`
-
-const Message = styled.div`
-    width: auto;
-    height: auto;
 `
 
 const SendMessageButton = styled.div`
@@ -142,10 +138,9 @@ class ChatWindow extends Component {
 
     return (
       <Main>
-
         <TitleBar>Cerebral</TitleBar>
         <MessageWindow>
-          {this.props.messages.map((message, index) => <div key={index}>{message.user + ": " + message.body}</div>)}
+          {this.props.messages.map((message, index) => <Message message ={message.body} username={message.user} key={index}/>)}
           <BottomScroll ref={el => { this.bottomOfMessages = el }}></BottomScroll>
         </MessageWindow>
         <MessageInputContainer>
