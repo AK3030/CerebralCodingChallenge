@@ -6,6 +6,7 @@ import fetchJsonp from 'fetch-jsonp';
 import questionData from './questionData';
 import { addMessage } from './actions/messageAction';
 import { setQuestion, incrementQuestion, putAnswerAction, putAnswer } from  './actions/currentQuestionActions'
+import validateQuestion from './validateQuestion';
 
 
 console.log("questionData", questionData);
@@ -72,24 +73,19 @@ class ChatWindow extends Component {
     this.state = {};
   }
 
-  testButtonClick = () => {
-    console.log("yoyo")
-    this.props.simpleAction();
-  }
-
   componentDidMount() {
       this.scrollToBottom();
-      this.sendQuestion();
+      this.props.setQuestion(0);
   }
 
   componentDidUpdate() {
     this.scrollToBottom();
   }
 
-  sendQuestion = () => {
-    this.currentQuestion = questionData.find((questionObj) => questionObj.id === this.props.currentQuestion)
-    this.props.addMessage({user: 'Cerebral', body: this.currentQuestion.question})
-  }
+  // sendQuestion = () => {
+  //   this.currentQuestion = questionData.find((questionObj) => questionObj.id === this.props.currentQuestion)
+  //   this.props.addMessage({user: 'Cerebral', body: this.currentQuestion.question})
+  // }
 
   scrollToBottom = () => {
     this.bottomOfMessages.scrollIntoView();
@@ -100,64 +96,22 @@ class ChatWindow extends Component {
     this.setState( (prevSate, props) => ({message: message}))
   }
 
-  validateQuestion = (userAnswer, fullQuestion) => {
-
-    //should always return the path to the next question
-    if (Array.isArray(fullQuestion.validation)) {
-      return this.optionsValidation(userAnswer, fullQuestion)
-    }
-    else if (typeof fullQuestion.validation === "string") {
-      return this.regexValidation(userAnswer, fullQuestion);
-    }
-    else {
-      if (fullQuestion.validation) {
-        return fullQuestion.paths
-      }
-      else {
-        return;
-      }
-    }
-
-  }
-
-  optionsValidation = (userAnswer, fullQuestion) => {
-    let validation = fullQuestion.validation;
-    let paths = fullQuestion.paths;
-    let id = fullQuestion.id
-    let matchedAnswer = validation.find((answer) => answer === userAnswer)
-    if (matchedAnswer) {
-      return paths[matchedAnswer];
-    }
-    else {
-      return false;
-    }
-  }
-
-  regexValidation(userAnswer, fullQuestion) {
-    let regexVal = fullQuestion.validation
-    let regex = RegExp(regexVal);
-    let paths = fullQuestion.paths;
-    if (regex.test(userAnswer)) {
-      return paths;
-    }
-    else {
-      return false;
-    }
-  }
-
   clearInput = () => {
-    this.setState( (prevSate, props) => ({message: ""}))
+    this.setState( prevSate => ({message: ""}))
   }
 
   sendMessage = () => {
+    //add user message to redux
     this.props.addMessage({user: 'Me', body: this.state.message});
     let currentFullQuestion = questionData.find(question => question.id === this.props.currentQuestion)
     let userMessage = this.state.message
-    let validAnswer = this.validateQuestion(userMessage, currentFullQuestion);
+    let validAnswer = validateQuestion(userMessage, currentFullQuestion);
     if (validAnswer) {
+      //if valid answer then send to server
       this.props.putAnswerAction(validAnswer, currentFullQuestion.id, validAnswer);
     }
     else {
+      // if invalid answer tell user to try again
       this.props.addMessage({user: 'Cerebral', body: 'Invalid Answer, try again'});
     }
     
@@ -178,7 +132,6 @@ class ChatWindow extends Component {
               <MessageInput value = {this.state.message} onChange={this.updateMessage}></MessageInput>
               <SendMessageButton onClick={this.sendMessage}></SendMessageButton>
           </MessageInputContainer>
-          <button onClick = { () => this.props.setQuestion(5)}>test</button>
       </Main>
     );
   }
