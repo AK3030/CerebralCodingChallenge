@@ -9,6 +9,7 @@ import { setQuestion, incrementQuestion, putAnswerAction, putAnswer } from './ac
 import validateQuestion from './validateQuestion';
 import Plane from './paperairplane.png'
 import Message from './Message';
+import BrainIcon from './brainicon.png';
 
 
 console.log("questionData", questionData);
@@ -18,7 +19,7 @@ const Main = styled.div`
     flex-direction: column;
     width: 45%;
     height: 45%;
-
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.4)
 `
 
 const TitleBar = styled.div`
@@ -29,6 +30,7 @@ const TitleBar = styled.div`
     align-items: center;
     box-sizing: border-box;
     padding-left: 20px;
+    font-weight: 600;
 `
 
 const MessageWindow = styled.div`
@@ -48,6 +50,7 @@ const MessageInputContainer = styled(TitleBar)`
     display: flex;
     justify-content: space-around;
     align-items: center;
+    padding-left: 0px;
 `
 
 const MessageInput = styled.textarea`
@@ -60,8 +63,8 @@ const MessageInput = styled.textarea`
 
 const SendMessageButton = styled.div`
     background-color: #5294FC;
-    height: 60%;
-    width: 15%;
+    height: 60px;
+    width: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -77,6 +80,15 @@ const BottomScroll = styled.div`
 
 const PaperAirplaneImage = styled.img`
   width: 50%;
+  filter: invert(100%);
+`
+
+const BrainImage = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 5px;
+  border: 1px solid green;
   filter: invert(100%);
 `
 
@@ -134,17 +146,26 @@ class ChatWindow extends Component {
     this.clearInput()
   }
 
+  handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      this.sendMessage();
+    }
+  }
+
   render() {
 
     return (
       <Main>
-        <TitleBar>Cerebral</TitleBar>
+        <TitleBar>
+          <BrainImage src={BrainIcon}/>
+          Cerebral
+        </TitleBar>
         <MessageWindow>
           {this.props.messages.map((message, index) => <Message message ={message.body} username={message.user} key={index}/>)}
           <BottomScroll ref={el => { this.bottomOfMessages = el }}></BottomScroll>
         </MessageWindow>
         <MessageInputContainer>
-          <MessageInput value={this.state.message} onChange={this.updateMessage}></MessageInput>
+          <MessageInput onKeyPress={this.handleKeyPress} value={this.state.message} onChange={this.updateMessage}></MessageInput>
           <SendMessageButton onClick={this.sendMessage}>
             <PaperAirplaneImage src={Plane}/>
           </SendMessageButton>

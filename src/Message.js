@@ -8,6 +8,7 @@ const MainDiv = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  font-weight: 600;
 `
 
 const User = styled.div`
@@ -22,16 +23,11 @@ const MessageBody = styled.div`
 
 class Message extends Component {
 
-  testButtonClick = () => {
-    console.log("yoyo")
-    this.props.simpleAction();
-  }
-
   render() {
     const userStyle = this.props.username === 'Cerebral'? {color: '#5D6979'} : null;
     return (
       <MainDiv>
-          <User style = {userStyle}>{this.props.username}</User>
+          <User style = {userStyle}>{this.props.username+":"}</User>
           <MessageBody>{this.props.message}</MessageBody>
       </MainDiv>
     );
