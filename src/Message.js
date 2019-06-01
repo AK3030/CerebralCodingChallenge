@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import { connect } from 'react-redux';
-import ChatWindow from './ChatWindow';
 import styled from 'styled-components';
 
 const MainDiv = styled.div`

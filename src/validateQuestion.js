@@ -17,16 +17,16 @@ const validateQuestion = (userAnswer, fullQuestion) => {
 
 }
 
-
 const optionsValidation = (userAnswer, fullQuestion) => {
   let validation = fullQuestion.validation;
   let paths = fullQuestion.paths;
-  console.log(userAnswer === validation[2])
+  
   let id = fullQuestion.id
   let matchedAnswer = validation.find((answer) => answer === userAnswer)
-  console.log('matched Answer', matchedAnswer)
+  console.log(paths)
   if (matchedAnswer) {
     if (paths[matchedAnswer]) {
+      console.log('got here', paths[matchedAnswer])
       return paths[matchedAnswer];
     }
     else {
@@ -43,6 +43,7 @@ const regexValidation = (userAnswer, fullQuestion) => {
   let regexVal = fullQuestion.validation
   let regex = RegExp(regexVal);
   let paths = fullQuestion.paths;
+  console.log('regex full question', fullQuestion)
   if (regex.test(userAnswer)) {
     return paths;
   }

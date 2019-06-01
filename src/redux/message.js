@@ -2,7 +2,6 @@ import questionData from '../questionData';
 
 //actions
 export const addMessage = message => {
-    console.log("hellooo", message)
     return {
         type: 'ADD_MESSAGE',
         message
@@ -15,7 +14,6 @@ export default (state = [], action) => {
         case 'ADD_MESSAGE':
             return [...state, action.message]
         case 'SET_QUESTION':
-            console.log('q id', action);
             let questionBody = questionData.find( question => question.id === action.questionId).question;
             let message = {user: 'Cerebral', body: questionBody}
             return [...state, message]

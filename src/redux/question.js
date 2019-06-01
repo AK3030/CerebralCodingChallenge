@@ -14,7 +14,6 @@ export const setQuestion = (questionId) => {
 }
 
 export const putAnswerAction = (answer, id, nextQuestion) => dispatch => {
-    console.log('put answer action', answer, id, nextQuestion);
     return putAnswer(answer, id)
         .then(response => {
 
@@ -28,6 +27,19 @@ export const putAnswerAction = (answer, id, nextQuestion) => dispatch => {
         )
 }
 
+//reducer
+export default (state = 1, action) => {
+    switch (action.type) {
+        case 'INCREMENT_QUESTION':
+            return state + 1;
+        case 'SET_QUESTION':
+            return action.questionId
+        default:
+            return state;
+    }
+}
+
+//fetch request
 export const putAnswer = (answer, id) => {
     let questionId = id;
     if (questionId === -1) {
@@ -41,16 +53,4 @@ export const putAnswer = (answer, id) => {
         method: 'PUT',
         body: JSON.stringify(answer)
     })
-}
-
-//reducer
-export default (state = 1, action) => {
-    switch (action.type) {
-        case 'INCREMENT_QUESTION':
-            return state + 1;
-        case 'SET_QUESTION':
-            return action.questionId
-        default:
-            return 0;
-    }
 }

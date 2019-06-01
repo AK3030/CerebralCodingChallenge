@@ -17,7 +17,6 @@ const MainDiv = styled.div`
 class App extends Component {
 
   testButtonClick = () => {
-    console.log("yoyo")
     this.props.simpleAction();
   }
 
