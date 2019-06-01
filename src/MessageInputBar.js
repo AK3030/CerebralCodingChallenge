@@ -79,7 +79,14 @@ class MessageInputBar extends Component {
         }
         else {
             // if invalid answer tell user to try again
-            this.props.addMessage({ user: 'Cerebral', body: 'Invalid Answer, try again' });
+            let invalidMessage = 'Invalid Answer, try again.';
+            if (Array.isArray(currentFullQuestion.validation)) {
+                var options = currentFullQuestion.validation.join(", ");
+                
+                invalidMessage += ` Options: ${options}`;
+            }
+            console.log(invalidMessage);
+            this.props.addMessage({ user: 'Cerebral', body: invalidMessage});
         }
 
         this.clearInput();
