@@ -85,7 +85,6 @@ class MessageInputBar extends Component {
                 
                 invalidMessage += ` Options: ${options}`;
             }
-            console.log(invalidMessage);
             this.props.addMessage({ user: 'Cerebral', body: invalidMessage});
         }
 
