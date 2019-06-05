@@ -10,24 +10,24 @@ const MainDiv = styled.div`
 `
 
 const User = styled.div`
-    margin-bottom: 5px;
-    margin-top: 5px;
-    color: #709DE6;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  color: #709DE6;
 `
 
 const MessageBody = styled.div`
-    color: #CBD3DC;
-    font-size: 15px;
+  color: #CBD3DC;
+  font-size: 15px;
 `
 
 class Message extends Component {
 
   render() {
-    const userStyle = this.props.username === 'Cerebral'? {color: '#5D6979'} : null;
+    const userStyle = this.props.username === 'Cerebral' ? { color: '#5D6979' } : null;
     return (
       <MainDiv>
-          <User style = {userStyle}>{this.props.username+":"}</User>
-          <MessageBody>{this.props.message}</MessageBody>
+        <User style={userStyle}>{this.props.username + ":"}</User>
+        <MessageBody>{this.props.message}</MessageBody>
       </MainDiv>
     );
   }

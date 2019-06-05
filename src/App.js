@@ -16,16 +16,10 @@ const MainDiv = styled.div`
 
 class App extends Component {
 
-  testButtonClick = () => {
-    this.props.simpleAction();
-  }
-
   render() {
     return (
       <MainDiv>
-        <ChatWindow></ChatWindow>
-
-        
+        <ChatWindow/>  
       </MainDiv>
     );
   }

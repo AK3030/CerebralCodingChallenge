@@ -2,11 +2,17 @@ import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { createGlobalStyle } from 'styled-components'
 import questionData from './questionData';
 import validateQuestion from './validateQuestion';
 import Plane from './paperairplane.png';
 import { addMessage } from './redux/message';
 import { putAnswerAction } from './redux/question';
+import styledNormalize from 'styled-normalize';
+
+createGlobalStyle`
+    ${styledNormalize};
+`
 
 const MessageInputContainer = styled.div`
     width: 100%;
@@ -16,7 +22,7 @@ const MessageInputContainer = styled.div`
     box-sizing: border-box;
     font-weight: 600;
     color: #5D6979;
-    flex-grow: 3;
+    height: 27%;
     justify-content: center;
     padding-left: 10px;
     padding-right: 10px;
@@ -35,10 +41,11 @@ const MessageInput = styled.textarea`
     box-sizing: border-box;
     flex-grow: 1;
     padding-top: 8px;
+
     &::placeholder {
-      color: #CBD3DC;
-      font-size: 15px;
-      font-weight: 600;
+        color: #CBD3DC;
+        font-size: 15px;
+        font-weight: 600;
     }
 `
 
@@ -51,14 +58,15 @@ const SendMessageButton = styled.div`
     align-items: center;
     border-radius: 5px;
     &:hover {
-      cursor: pointer;
+        cursor: pointer;
     }
     margin-left: 12px;
+
 `
 
 const PaperAirplaneImage = styled.img`
-  width: 28%;
-  filter: invert(100%);
+    width: 28%;
+    filter: invert(100%);
 `
 
 class MessageInputBar extends Component {
@@ -82,10 +90,10 @@ class MessageInputBar extends Component {
             let invalidMessage = 'Invalid Answer, try again.';
             if (Array.isArray(currentFullQuestion.validation)) {
                 var options = currentFullQuestion.validation.join(", ");
-                
+
                 invalidMessage += ` Options: ${options}`;
             }
-            this.props.addMessage({ user: 'Cerebral', body: invalidMessage});
+            this.props.addMessage({ user: 'Cerebral', body: invalidMessage });
         }
 
         this.clearInput();

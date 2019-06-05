@@ -14,6 +14,7 @@ const Main = styled.div`
     width: 40%;
     height: 45%;
     box-shadow: 5px 20px 30px rgba(0, 0, 0, 0.25);
+    min-width: 300px;
 `
 
 export const TitleBar = styled.div`
@@ -29,9 +30,9 @@ export const TitleBar = styled.div`
 `
 
 const MessageWindow = styled.div`
-    height: 50%;
+    height: 55%;
     width: 100%;
-    overflow: scroll;
+    overflow: auto;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
