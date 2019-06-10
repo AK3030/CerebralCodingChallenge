@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/CerebralCodingChallenge/precache-manifest.b13d7d9d5bf7783392556ed74bc5fbb4.js"
+  "/cerebral-challenge/precache-manifest.b5408cae0017e2639158923e54ad10f3.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/CerebralCodingChallenge/index.html", {
+workbox.routing.registerNavigationRoute("/cerebral-challenge/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
