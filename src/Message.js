@@ -7,6 +7,7 @@ const MainDiv = styled.div`
   display: flex;
   flex-direction: column;
   font-weight: 600;
+  flex-shrink: 0;
 `
 
 const User = styled.div`
