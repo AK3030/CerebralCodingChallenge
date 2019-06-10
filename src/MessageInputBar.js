@@ -2,17 +2,12 @@ import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { createGlobalStyle } from 'styled-components'
 import questionData from './questionData';
 import validateQuestion from './validateQuestion';
 import Plane from './paperairplane.png';
 import { addMessage } from './redux/message';
 import { putAnswerAction } from './redux/question';
-import styledNormalize from 'styled-normalize';
 
-createGlobalStyle`
-    ${styledNormalize};
-`
 
 const MessageInputContainer = styled.div`
     width: 100%;
@@ -33,7 +28,7 @@ const MessageInput = styled.textarea`
     width: 70%;
     resize: none;
     border-radius: 3px;
-    border-color: #DDE4ED;
+    border: 1px solid #DDE4ED;
     color: #CBD3DC;
     font-size: 15px;
     font-weight: 600;
@@ -41,7 +36,6 @@ const MessageInput = styled.textarea`
     box-sizing: border-box;
     flex-grow: 1;
     padding-top: 8px;
-
     &::placeholder {
         color: #CBD3DC;
         font-size: 15px;

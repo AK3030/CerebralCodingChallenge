@@ -3,6 +3,13 @@ import './App.css';
 import { connect } from 'react-redux';
 import ChatWindow from './ChatWindow';
 import styled from 'styled-components';
+import styledNormalize from 'styled-normalize';
+import { createGlobalStyle } from 'styled-components';
+
+
+createGlobalStyle`
+    ${styledNormalize};
+`
 
 const MainDiv = styled.div`
   width: 100%;

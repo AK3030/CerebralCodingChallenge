@@ -9,37 +9,38 @@ import BrainIcon from './brainicon.png';
 import MessageInputBar from './MessageInputBar'
 
 const Main = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 40%;
-    height: 45%;
-    box-shadow: 5px 20px 30px rgba(0, 0, 0, 0.25);
-    min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  height: 45%;
+  box-shadow: 5px 20px 30px rgba(0, 0, 0, 0.25);
+  min-width: 300px;
+  min-height: 250px;
 `
 
 export const TitleBar = styled.div`
-    width: 100%;
-    flex-grow: 1;
-    background-color: #ECF5F6;
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
-    padding-left: 20px;
-    font-weight: 600;
-    color: #5D6979;
+  width: 100%;
+  flex-grow: 1;
+  background-color: #ECF5F6;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding-left: 20px;
+  font-weight: 600;
+  color: #5D6979;
 `
 
 const MessageWindow = styled.div`
-    height: 55%;
-    width: 100%;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    padding-right: 20px;
-    padding-left: 20px;
-    background-color: white;
-    padding-bottom: 4px;
+  height: 55%;
+  width: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding-right: 20px;
+  padding-left: 20px;
+  background-color: white;
+  padding-bottom: 4px;
 `
 
 const BottomScroll = styled.div`
@@ -72,7 +73,6 @@ class ChatWindow extends Component {
   }
 
   scrollToBottom = () => {
-
     this.bottomOfMessages.scrollIntoView();
   }
 
@@ -80,14 +80,14 @@ class ChatWindow extends Component {
     return (
       <Main>
         <TitleBar>
-          <BrainImage src={BrainIcon}/>
+          <BrainImage src={BrainIcon} />
           Cerebral
         </TitleBar>
         <MessageWindow>
-          {this.props.messages.map((message, index) => <Message message ={message.body} username={message.user} key={index}/>)}
+          {this.props.messages.map((message, index) => <Message message={message.body} username={message.user} key={index} />)}
           <BottomScroll ref={el => { this.bottomOfMessages = el }}></BottomScroll>
         </MessageWindow>
-        <MessageInputBar/>
+        <MessageInputBar />
       </Main>
     );
   }
