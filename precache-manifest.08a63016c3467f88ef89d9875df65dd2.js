@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "78dae110544d62deec83",
+    "revision": "2bbb644c46cf81704985",
     "url": "/cerebral-challenge/static/css/main.58e0036d.chunk.css"
   },
   {
-    "revision": "78dae110544d62deec83",
-    "url": "/cerebral-challenge/static/js/main.e4de4d18.chunk.js"
+    "revision": "2bbb644c46cf81704985",
+    "url": "/cerebral-challenge/static/js/main.93622e78.chunk.js"
   },
   {
     "revision": "8ab933607961afd0e407",
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/cerebral-challenge/static/media/paperairplane.ce33edf7.png"
   },
   {
-    "revision": "a298814856cc5f29aac8b1bd4ac870d0",
+    "revision": "5127435d3d93919098aaa4a4353c14df",
     "url": "/cerebral-challenge/index.html"
   }
 ];

@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/cerebral-challenge/precache-manifest.c3cff6cb3d79b57160a87a196dcd2db8.js"
+  "/cerebral-challenge/precache-manifest.08a63016c3467f88ef89d9875df65dd2.js"
 );
 
 workbox.clientsClaim();
