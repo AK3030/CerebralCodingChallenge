@@ -14,8 +14,12 @@ const Main = styled.div`
   width: 40%;
   height: 45%;
   box-shadow: 5px 20px 30px rgba(0, 0, 0, 0.25);
-  min-width: 300px;
+  min-width: 350px;
   min-height: 250px;
+
+  @media (max-width: 450px) {
+    width: 100%;
+  }
 `
 
 export const TitleBar = styled.div`
